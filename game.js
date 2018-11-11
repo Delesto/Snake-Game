@@ -74,8 +74,8 @@ class Food extends Rect {
     }
 
     generateRandomPos() {
-        this.pos.x = 0;
-        this.pos.y = 0;
+        // this.pos.x = 0;
+        // this.pos.y = 0;
         this.pos.x = this._getRandomInt(0, this.canvasWidth - this.size.x, this._cellSize);
         this.pos.y = this._getRandomInt(0, this.canvasHeight - this.size.y, this._cellSize);
     }
@@ -94,7 +94,6 @@ class Game {
         
         this.snakeVelocity = 10;
         this.stepDelay = 100;
-        this.tailDelay = 0;
         
         this.snake.vel.x = this.snakeVelocity;
         this.snake.vel.y = this.snakeVelocity;
@@ -186,7 +185,7 @@ class Game {
         }
     }
 
-    controlSnakeMovement() {
+    edgeToEdgeMovement() {
         if(this.snake.pos.x > this._canvasWidth - this.snake.size.x && this.snake.direction.x === 1) {
             this.snake.setPosition('x', -this.snake.size.x);
             this.moveTailTo('rightEdge');
@@ -204,9 +203,7 @@ class Game {
         }
     }
 
-    update() {
-        this.controlSnakeMovement();
-
+    controlSnakeMovement() {
         if(Math.sign(this.snake.direction.x) === 1) {
             this.moveSnakeTo('right');
             this.moveTailTo('right');
@@ -220,6 +217,11 @@ class Game {
             this.moveSnakeTo('top');
             this.moveTailTo('top');
         }
+    }
+
+    update() {
+        this.edgeToEdgeMovement();
+        this.controlSnakeMovement();
 
         if(!this.defineCollisionWithFood()) {
             this.defineCollisionWithSnake();
